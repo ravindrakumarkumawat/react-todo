@@ -1,8 +1,11 @@
+require('dotenv').config()
 const mongoose = require('mongoose')
+
+const URI = process.env.DATABASE_URL
 
 const connectDB = async () => {
   try {
-    await mongoose.connect('mongodb+srv://reactMongoDB-TodoApp:1J@n1997@cluster0-dt8na.mongodb.net/REACTMOGODB-TODOAPP?retryWrites=true&w=majority', {
+    await mongoose.connect(URI, {
       useUnifiedTopology: true,
       useNewUrlParser: true
     })
