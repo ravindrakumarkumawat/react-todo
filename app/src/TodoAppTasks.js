@@ -1,17 +1,26 @@
 import React, { Component } from 'react'
 
-function TodoInput () {
-  return (
-    <div>
-      <input
-        className='new-todo-input'
-        placeholder='Search | Create a List'
-      />
-      <button className='btn'>
-            +
-      </button>
-    </div>
-  )
+class TodoInput extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      value: ''
+    }
+  }
+
+  render () {
+    return (
+      <div>
+        <input
+          className='new-todo-input'
+          placeholder='Search | Create a List'
+        />
+        <button className='btn'>
+              +
+        </button>
+      </div>
+    )
+  }
 }
 
 function Lists () {
@@ -28,6 +37,21 @@ function Lists () {
 }
 
 class TodoAppTasks extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      tasks: []
+    }
+  }  
+
+  componentDidMount () {
+
+  }
+
+  componentWillUnmount () {
+
+  }
+
   render () {
     return (
       <div className='todo-lists'>
