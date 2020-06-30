@@ -35,13 +35,20 @@ function List (props) {
 }
 
 function Lists (props) {
-  const list = props.lists.map((list, index) =>
-    <List key={index} list={list} />
-  )
+  // const list = props.lists.map((list, index) =>
+  //   <List key={index} list={list} />
+  // )
 
+  // return (
+  //   <ul>
+  //     {list}
+  //   </ul>
+  // )
   return (
     <ul>
-      {list}
+      {
+        props.lists.map((list, index) => <List key={index} list={list} />)
+      }
     </ul>
   )
 }
