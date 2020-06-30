@@ -23,15 +23,21 @@ class TodoInput extends Component {
   }
 }
 
-function Lists () {
-  return (
-    <ul>
-      <li>
-        <span>Ravindra</span>
+function Lists (props) {
+  const list = props.lists.map((list, index) => {
+    return (
+      <li key={index}>
+        <span>{list}</span>
         <button className='btn-delete'>Delete</button>
         <button className='btn-edit'>Edit</button>
         <button className='btn-edit'>Save</button>
       </li>
+    )
+  })
+
+  return (
+    <ul>
+      {list}
     </ul>
   )
 }
@@ -40,7 +46,7 @@ class TodoAppTasks extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      tasks: []
+      lists: ['tasks1', 'tasks2', 'tasks4', 'My name is ravindra kumawat', 'saviour']
     }
   }  
 
@@ -53,11 +59,12 @@ class TodoAppTasks extends Component {
   }
 
   render () {
+    const { lists } = this.state
     return (
       <div className='todo-lists'>
         <h2>My Lists </h2>
         <TodoInput />
-        <Lists />
+        <Lists lists={lists} />
         <p className='empty-list'>
           Pheww, List is Empty. Lets Chill & Netflix 🍕🍔🍺
         </p>
