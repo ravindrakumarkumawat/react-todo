@@ -16,24 +16,28 @@ class TodoInput extends Component {
           placeholder='Search | Create a List'
         />
         <button className='btn'>
-              +
+          +
         </button>
       </div>
     )
   }
 }
 
+function List (props) {
+  return (
+    <li>
+      <span>{props.list}</span>
+      <button className='btn-delete'>Delete</button>
+      <button className='btn-edit'>Edit</button>
+      <button className='btn-edit'>Save</button>
+    </li>
+  )
+}
+
 function Lists (props) {
-  const list = props.lists.map((list, index) => {
-    return (
-      <li key={index}>
-        <span>{list}</span>
-        <button className='btn-delete'>Delete</button>
-        <button className='btn-edit'>Edit</button>
-        <button className='btn-edit'>Save</button>
-      </li>
-    )
-  })
+  const list = props.lists.map((list, index) =>
+    <List key={index} list={list} />
+  )
 
   return (
     <ul>
@@ -48,7 +52,7 @@ class TodoAppTasks extends Component {
     this.state = {
       lists: ['tasks1', 'tasks2', 'tasks4', 'My name is ravindra kumawat', 'saviour']
     }
-  }  
+  }
 
   componentDidMount () {
 
