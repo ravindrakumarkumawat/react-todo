@@ -64,9 +64,9 @@ class TodoAppTasks extends Component {
       lists: [],
       input: ''
     }
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleKeyPressed = this.handleKeyPressed.bind(this)
+    // this.handleChange = this.handleChange.bind(this)
+    // this.handleSubmit = this.handleSubmit.bind(this)
+    // this.handleKeyPressed = this.handleKeyPressed.bind(this)
   }
 
   handleChange (event) {
@@ -118,10 +118,10 @@ class TodoAppTasks extends Component {
             className='new-todo-input'
             placeholder='Search | Create a List'
             value={input}
-            onChange={this.handleChange}
-            onKeyPress={this.handleKeyPressed}
+            onChange={(event) => this.handleChange(event)}
+            onKeyPress={(event) => this.handleKeyPressed(event)}
           />
-          <button className='btn' onClick={this.handleSubmit}>
+          <button className='btn' onClick={() => this.handleSubmit()}>
           +
           </button>
         </div>
