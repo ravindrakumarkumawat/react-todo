@@ -14,7 +14,7 @@ exports.add_list = async (req, res) => {
   try {
     const { newList } = req.body
     const list = await Todo.create({ name: newList })
-    res.status(200).json({ _id: list._id, name: newList })
+    res.status(200).json(list)
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
