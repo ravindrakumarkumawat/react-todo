@@ -75,17 +75,29 @@ class TodoAppTasks extends Component {
 
   handleKeyPressed (event) {
     if (event.key === 'Enter') {
-      this.submitMessage()
+      this.handleSubmit()
     }
   }
 
   handleSubmit () {
-    this.setState({ lists: [...this.state.lists, this.state.input] })
-    this.setState({ input: '' })
+    if (this.state.input) {
+      fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify({ newList: this.state.input }),
+        headers: {
+          'content-type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then((res) => {
+          this.setState({ lists: [...this.state.lists, res] })
+          this.setState({ input: '' })
+        })
+    }
   }
 
   componentDidMount () {
-    window.fetch(API_URL)
+    fetch(API_URL)
       .then(response => response.json())
       .then(res => {
         this.setState({ lists: res })
