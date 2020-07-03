@@ -30,7 +30,10 @@ const API_URL = 'http://localhost:5000/lists'
 function List (props) {
   return (
     <li>
-      <span>{props.list.name}</span>
+      <span>{props.list.name} </span>
+      <input
+        placeholder='Update the list name'
+      />
       <button className='btn-delete'>Delete</button>
       <button className='btn-edit'>Edit</button>
       <button className='btn-edit'>Save</button>
@@ -122,7 +125,7 @@ class TodoAppTasks extends Component {
             onKeyPress={(event) => this.handleKeyPressed(event)}
           />
           <button className='btn' onClick={() => this.handleSubmit()}>
-          +
+            +
           </button>
         </div>
         <Lists lists={lists} />

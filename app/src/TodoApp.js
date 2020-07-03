@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import TodoAppTasks from './TodoAppTasks'
+import TodoAppTaskItems from './TodoAppTaskItems'
+import TodoAppTaskItemPriority from './TodoAppTaskItemPriority'
 
 class TodoApp extends Component {
   render () {
@@ -9,6 +11,8 @@ class TodoApp extends Component {
           <h1 className='title'>ToDo App: React.js, MongoDB & ExpressJs</h1>
         </div>
         <TodoAppTasks />
+        <TodoAppTaskItems />
+        <TodoAppTaskItemPriority />
       </div>
     )
   }
