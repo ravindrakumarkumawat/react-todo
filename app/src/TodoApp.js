@@ -49,6 +49,10 @@ class TodoApp extends Component {
     }
   }
 
+  deleteList (id) {
+    console.log(id)
+  }
+
   render () {
     const { lists } = this.state
     return (
@@ -56,7 +60,11 @@ class TodoApp extends Component {
         <div className='header'>
           <h1 className='title'>ToDo App: React.js, MongoDB & ExpressJs</h1>
         </div>
-        <TodoAppTasks lists={lists} onClick={this.handleSubmit} />
+        <TodoAppTasks
+          lists={lists}
+          onClick={this.handleSubmit}
+          deleteList={this.deleteList}
+        />
         <TodoAppTaskItems />
         <TodoAppTaskItemPriority />
       </div>

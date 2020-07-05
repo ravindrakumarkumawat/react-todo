@@ -34,7 +34,7 @@ function List (props) {
       <input
         placeholder='Update the list name'
       />
-      <button className='btn-delete'>Delete</button>
+      <button className='btn-delete' onClick={() => props.deleteList()}>Delete</button>
       <button className='btn-edit'>Edit</button>
       <button className='btn-edit'>Save</button>
     </li>
@@ -54,7 +54,7 @@ function Lists (props) {
   return (
     <ul>
       {
-        props.lists.map(list => <List key={list._id} list={list} />)
+        props.lists.map(list => <List key={list._id} list={list} deleteList={() => props.deleteList(list._id)} />)
       }
     </ul>
   )
@@ -102,7 +102,7 @@ class TodoAppTasks extends Component {
             +
           </button>
         </div>
-        <Lists lists={lists} />
+        <Lists lists={lists} deleteList={this.props.deleteList} />
         <p className='empty-list'>
           Pheww, List is Empty. Lets Chill & Netflix 🍕🍔🍺
         </p>
