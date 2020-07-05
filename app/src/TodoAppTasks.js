@@ -46,7 +46,7 @@ class List extends Component {
     const { input } = this.state
     return (
       <li>
-        <span>{list.name} </span>
+        <span onClick={() => this.props.selectedList(list._id)}>{list.name} </span>
         <input
           placeholder='Update the list name'
           value={input}
@@ -93,6 +93,7 @@ function Lists (props) {
             list={list}
             deleteList={props.deleteList}
             updateList={props.updateList}
+            selectedList={props.selectedList}
           />)
       }
     </ul>
@@ -145,6 +146,7 @@ class TodoAppTasks extends Component {
           lists={lists}
           deleteList={this.props.deleteList}
           updateList={this.props.updateList}
+          selectedList={this.props.selectedList}
         />
         <p className='empty-list'>
           Pheww, List is Empty. Lets Chill & Netflix

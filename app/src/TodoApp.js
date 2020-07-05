@@ -9,7 +9,8 @@ class TodoApp extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      lists: []
+      lists: [],
+      list: []
     }
     // this.handleChange = this.handleChange.bind(this)
     // this.handleSubmit = this.handleSubmit.bind(this)
@@ -75,6 +76,10 @@ class TodoApp extends Component {
       )
   }
 
+  selectedList (id) {
+    console.log(id)
+  }
+
   render () {
     const { lists } = this.state
     return (
@@ -87,6 +92,7 @@ class TodoApp extends Component {
           onClick={this.handleSubmit}
           deleteList={this.deleteList}
           updateList={this.updateList}
+          selectedList={this.selectedList}
         />
         <TodoAppTaskItems />
         <TodoAppTaskItemPriority />
