@@ -53,7 +53,7 @@ class TodoAppTaskItems extends Component {
           <p
             className='empty-list'
           >
-                Ohh No, List has no item. Let's add some item 👨‍💻
+                Ohh No, List has no item. Add some item
           </p>
           <button
             className='btn'

@@ -24,14 +24,6 @@ class TodoApp extends Component {
       })
   }
 
-  componentWillUnmount () {
-
-  }
-
-  setList (list) {
-    this.setState({ lists: [...this.state.lists, list] })
-  }
-
   handleSubmit (input) {
     console.log(input)
     if (input) {
@@ -44,13 +36,43 @@ class TodoApp extends Component {
       })
         .then(response => response.json())
         .then((res) => {
-          this.setList(res)
+          this.setState({ lists: [...this.state.lists, res] })
         })
     }
   }
 
   deleteList (id) {
+    fetch(API_URL + `/${id}`, {
+      method: 'DELETE'
+    })
+      .then(response => response.json())
+      .then(() => {
+        this.setState({
+          lists: this.lists.filter(list => list._id !== id)
+        })
+      })
+  }
+
+  updateList (name, id) {
+    console.log(name)
     console.log(id)
+    fetch(API_URL + `/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ newList: name }),
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(() =>
+        this.setState({
+          lists: this.lists.map(list => {
+            if (list.id === id) {
+              list.name = name
+            }
+          })
+        })
+      )
   }
 
   render () {
@@ -64,6 +86,7 @@ class TodoApp extends Component {
           lists={lists}
           onClick={this.handleSubmit}
           deleteList={this.deleteList}
+          updateList={this.updateList}
         />
         <TodoAppTaskItems />
         <TodoAppTaskItemPriority />

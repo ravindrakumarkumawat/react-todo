@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 
-const API_URL = 'http://localhost:5000/lists'
-
 // class TodoInput extends Component {
 //   constructor (props) {
 //     super(props)
@@ -27,19 +25,54 @@ const API_URL = 'http://localhost:5000/lists'
 //   }
 // }
 
-function List (props) {
-  return (
-    <li>
-      <span>{props.list.name} </span>
-      <input
-        placeholder='Update the list name'
-      />
-      <button className='btn-delete' onClick={() => props.deleteList()}>Delete</button>
-      <button className='btn-edit'>Edit</button>
-      <button className='btn-edit'>Save</button>
-    </li>
-  )
+class List extends Component {
+  constructor (props) {
+    super(props)
+    this.initialState = {
+      input: this.props.list.name
+    }
+    this.state = this.initialState
+  }
+
+  handleChange (event) {
+    const { value } = event.target
+    this.setState({
+      input: value
+    })
+  }
+
+  render () {
+    const { list } = this.props
+    const { input } = this.state
+    return (
+      <li>
+        <span>{list.name} </span>
+        <input
+          placeholder='Update the list name'
+          value={input}
+          onChange={(event) => this.handleChange(event)}
+        />
+        <button className='btn-delete' onClick={() => this.props.deleteList(list._id)}>Delete</button>
+        <button className='btn-edit'>Edit</button>
+        <button className='btn-edit' onClick={() => this.props.updateList(this.state.input, this.props.list._id)}>Save</button>
+      </li>
+    )
+  }
 }
+
+// function List (props) {
+//   return (
+//     <li>
+//       <span>{props.list.name} </span>
+//       <input
+//         placeholder='Update the list name'
+//       />
+//       <button className='btn-delete' onClick={() => props.deleteList()}>Delete</button>
+//       <button className='btn-edit'>Edit</button>
+//       <button className='btn-edit' onClick={() => props.updateList()}>Save</button>
+//     </li>
+//   )
+// }
 
 function Lists (props) {
   // const list = props.lists.map((list, index) =>
@@ -54,7 +87,13 @@ function Lists (props) {
   return (
     <ul>
       {
-        props.lists.map(list => <List key={list._id} list={list} deleteList={() => props.deleteList(list._id)} />)
+        props.lists.map(list =>
+          <List
+            key={list._id}
+            list={list}
+            deleteList={props.deleteList}
+            updateList={props.updateList}
+          />)
       }
     </ul>
   )
@@ -102,9 +141,13 @@ class TodoAppTasks extends Component {
             +
           </button>
         </div>
-        <Lists lists={lists} deleteList={this.props.deleteList} />
+        <Lists
+          lists={lists}
+          deleteList={this.props.deleteList}
+          updateList={this.props.updateList}
+        />
         <p className='empty-list'>
-          Pheww, List is Empty. Lets Chill & Netflix 🍕🍔🍺
+          Pheww, List is Empty. Lets Chill & Netflix
         </p>
       </div>
     )
