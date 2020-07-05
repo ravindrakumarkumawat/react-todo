@@ -64,12 +64,8 @@ class TodoAppTasks extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      lists: [],
       input: ''
     }
-    // this.handleChange = this.handleChange.bind(this)
-    // this.handleSubmit = this.handleSubmit.bind(this)
-    // this.handleKeyPressed = this.handleKeyPressed.bind(this)
   }
 
   handleChange (event) {
@@ -78,41 +74,19 @@ class TodoAppTasks extends Component {
 
   handleKeyPressed (event) {
     if (event.key === 'Enter') {
-      this.handleSubmit()
+      this.handleInput()
     }
   }
 
-  handleSubmit () {
-    if (this.state.input) {
-      fetch(API_URL, {
-        method: 'POST',
-        body: JSON.stringify({ newList: this.state.input }),
-        headers: {
-          'content-type': 'application/json'
-        }
-      })
-        .then(response => response.json())
-        .then((res) => {
-          this.setState({ lists: [...this.state.lists, res] })
-          this.setState({ input: '' })
-        })
-    }
-  }
-
-  componentDidMount () {
-    fetch(API_URL)
-      .then(response => response.json())
-      .then(res => {
-        this.setState({ lists: res })
-      })
-  }
-
-  componentWillUnmount () {
-
+  handleInput () {
+    const value = this.state.input
+    this.props.onClick(value)
+    this.setState({ input: '' })
   }
 
   render () {
-    const { lists, input } = this.state
+    const { lists } = this.props
+    const { input } = this.state
     return (
       <div className='todo-lists'>
         <h2>My Lists </h2>
@@ -124,7 +98,7 @@ class TodoAppTasks extends Component {
             onChange={(event) => this.handleChange(event)}
             onKeyPress={(event) => this.handleKeyPressed(event)}
           />
-          <button className='btn' onClick={() => this.handleSubmit()}>
+          <button className='btn' onClick={() => this.handleInput()}>
             +
           </button>
         </div>

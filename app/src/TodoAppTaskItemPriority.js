@@ -8,7 +8,7 @@ class TodoAppTaskItemPriority extends Component {
           selectedListItem.item
         </h2>
 
-        <div clasNames='tasks form'>
+        <div className='tasks form'>
 
           Note: <br />
           <textarea
