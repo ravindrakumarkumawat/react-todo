@@ -1,29 +1,6 @@
 import React, { Component } from 'react'
 
-// class TodoInput extends Component {
-//   constructor (props) {
-//     super(props)
-//     this.state = {
-//       list: ''
-//     }
-//   }
-
-//   render () {
-//     return (
-//       <div>
-//         <input
-//           className='new-todo-input'
-//           placeholder='Search | Create a List'
-//           value={this.state.value}
-
-//         />
-//         <button className='btn'>
-//           +
-//         </button>
-//       </div>
-//     )
-//   }
-// }
+const API_URL = 'http://localhost:5000/lists'
 
 class List extends Component {
   constructor (props) {
@@ -60,20 +37,6 @@ class List extends Component {
   }
 }
 
-// function List (props) {
-//   return (
-//     <li>
-//       <span>{props.list.name} </span>
-//       <input
-//         placeholder='Update the list name'
-//       />
-//       <button className='btn-delete' onClick={() => props.deleteList()}>Delete</button>
-//       <button className='btn-edit'>Edit</button>
-//       <button className='btn-edit' onClick={() => props.updateList()}>Save</button>
-//     </li>
-//   )
-// }
-
 function Lists (props) {
   // const list = props.lists.map((list, index) =>
   //   <List key={index} list={list} />
@@ -104,8 +67,17 @@ class TodoAppTasks extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      lists: [],
       input: ''
     }
+  }
+
+  componentDidMount () {
+    fetch(API_URL)
+      .then(response => response.json())
+      .then(res => {
+        this.setState({ lists: res })
+      })
   }
 
   handleChange (event) {
@@ -114,19 +86,64 @@ class TodoAppTasks extends Component {
 
   handleKeyPressed (event) {
     if (event.key === 'Enter') {
-      this.handleInput()
+      this.handleSubmit()
     }
   }
 
-  handleInput () {
+  handleSubmit () {
     const value = this.state.input
-    this.props.onClick(value)
-    this.setState({ input: '' })
+    if (value) {
+      fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify({ newList: value }),
+        headers: {
+          'content-type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then((res) => {
+          this.setState({ lists: [...this.state.lists, res] })
+          this.setState({ input: '' })
+        })
+    }
+  }
+
+  deleteList (id) {
+    fetch(API_URL + `/${id}`, {
+      method: 'DELETE'
+    })
+      .then(response => response.json())
+      .then(() => {
+        this.setState({
+          lists: this.lists.filter(list => list._id !== id)
+        })
+      })
+  }
+
+  updateList (name, id) {
+    console.log(name)
+    console.log(id)
+    fetch(API_URL + `/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ newList: name }),
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(() =>
+        this.setState({
+          lists: this.lists.map(list => {
+            if (list.id === id) {
+              list.name = name
+            }
+          })
+        })
+      )
   }
 
   render () {
-    const { lists } = this.props
-    const { input } = this.state
+    const { lists, input } = this.state
     return (
       <div className='todo-lists'>
         <h2>My Lists </h2>
@@ -138,15 +155,14 @@ class TodoAppTasks extends Component {
             onChange={(event) => this.handleChange(event)}
             onKeyPress={(event) => this.handleKeyPressed(event)}
           />
-          <button className='btn' onClick={() => this.handleInput()}>
+          <button className='btn' onClick={() => this.handleSubmit()}>
             +
           </button>
         </div>
         <Lists
           lists={lists}
-          deleteList={this.props.deleteList}
-          updateList={this.props.updateList}
-          selectedList={this.props.selectedList}
+          deleteList={this.deleteList}
+          updateList={this.updateList}
         />
         <p className='empty-list'>
           Pheww, List is Empty. Lets Chill & Netflix
