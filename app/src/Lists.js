@@ -21,7 +21,7 @@ class List extends Component {
     const { input } = this.state
     return (
       <li>
-        <span onClick={() => this.props.selectedList(list._id)}>{list.name} </span>
+        <span>{list.name} </span>
         <input
           placeholder='Update the list name'
           value={input}
@@ -71,3 +71,9 @@ function Lists (props) {
 }
 
 export default Lists
+
+// <Lists
+// lists={lists}
+// deleteList={() => deleteList()}
+// updateList={() => updateList()}
+// />

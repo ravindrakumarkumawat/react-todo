@@ -116,6 +116,7 @@ const API_URL = 'http://localhost:5000/lists'
 function TodoAppTasks (props) {
   const [lists, setLists] = useState([])
   const [input, setInput] = useState('')
+  const [newInput, setNewInput] = useState('')
 
   useEffect(() => {
     fetch(API_URL)
@@ -200,11 +201,21 @@ function TodoAppTasks (props) {
             +
         </button>
       </div>
-      <Lists
-        lists={lists}
-        deleteList={() => deleteList()}
-        updateList={() => updateList()}
-      />
+      <ul>
+        {
+          lists.map(list =>
+            <li key={list._id}>
+              <span>{list.name} </span>
+              <button
+                className='btn-delete'
+                onClick={() => deleteList(list._id)}
+              >
+                Delete
+              </button>
+            </li>
+          )
+        }
+      </ul>
       <p className='empty-list'>
           Pheww, List is Empty. Lets Chill & Netflix
       </p>
