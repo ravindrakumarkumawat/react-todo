@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import TodoAppTasks from './TodoAppTasks'
 import TodoAppTaskItems from './TodoAppTaskItems'
 import TodoAppTaskItemPriority from './TodoAppTaskItemPriority'
@@ -10,9 +11,20 @@ class TodoApp extends Component {
         <div className='header'>
           <h1 className='title'>ToDo App: React.js, MongoDB & ExpressJs</h1>
         </div>
-        <TodoAppTasks />
-        <TodoAppTaskItems />
-        <TodoAppTaskItemPriority />
+        <Router>
+          <Switch>
+            <Route path='/' exact>
+              <TodoAppTasks />
+            </Route>
+            <Route path='/tasks/:listId' exact>
+              <TodoAppTaskItems />
+              <TodoAppTaskItemPriority />
+            </Route>
+            <Route path='*'>
+              <TodoAppTasks />
+            </Route>
+          </Switch>
+        </Router>
       </div>
     )
   }
