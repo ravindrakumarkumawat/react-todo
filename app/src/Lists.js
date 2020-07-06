@@ -27,9 +27,19 @@ class List extends Component {
           value={input}
           onChange={(event) => this.handleChange(event)}
         />
-        <button className='btn-delete' onClick={() => this.props.deleteList(list._id)}>Delete</button>
+        <button
+          className='btn-delete'
+          onClick={() => this.props.deleteList(list._id)}
+        >
+        Delete
+        </button>
         <button className='btn-edit'>Edit</button>
-        <button className='btn-edit' onClick={() => this.props.updateList(this.state.input, this.props.list._id)}>Save</button>
+        <button
+          className='btn-edit'
+          onClick={() => this.props.updateList(this.state.input, this.props.list._id)}
+        >
+        Save
+        </button>
       </li>
     )
   }
@@ -54,7 +64,6 @@ function Lists (props) {
             list={list}
             deleteList={props.deleteList}
             updateList={props.updateList}
-            selectedList={props.selectedList}
           />)
       }
     </ul>
