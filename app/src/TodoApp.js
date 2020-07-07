@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import TodoAppTasks from './TodoAppTasks'
 import TodoAppTaskItems from './TodoAppTaskItems'
-import TodoAppTaskItemPriority from './TodoAppTaskItemPriority'
 
 class TodoApp extends Component {
   render () {
@@ -18,7 +17,6 @@ class TodoApp extends Component {
             </Route>
             <Route path='/tasks/:listId' exact>
               <TodoAppTaskItems />
-              <TodoAppTaskItemPriority />
             </Route>
             <Route path='*'>
               <TodoAppTasks />

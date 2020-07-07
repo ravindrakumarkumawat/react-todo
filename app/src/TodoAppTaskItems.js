@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import TodoAppTaskItemPriority from './TodoAppTaskItemPriority'
 
 const API_URL = 'http://localhost:5000/lists'
 
@@ -80,6 +81,7 @@ function TodoAppTaskItems (props) {
   const [input, setInput] = useState('')
   const [list, setList] = useState({})
   const [eListName, setEListName] = useState(false)
+  const [editTask, setEditTask] = useState({ status: false, index: null })
 
   useEffect(() => {
     fetch(API_URL + `/${listId}/tasks`)
@@ -149,7 +151,27 @@ function TodoAppTaskItems (props) {
     if (event.keyCode === 27 && !listName.length) return setEListName(false)
   }
 
+  const updateTask = (task) => {
+    fetch(API_URL + `/${listId}/tasks/${task._id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ newItem: task.name, note: task.note, date: task.date, priority: task.priority, completed: !task.completed }),
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+  }
 
+  const completeTask = (task) => {
+    fetch(API_URL + `/${listId}/tasks/${task._id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ newItem: task.name, note: task.note, date: task.date, priority: task.priority, completed: !task.completed }),
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+  }
 
   return (
     <div className='todo-lists'>
@@ -189,15 +211,19 @@ function TodoAppTaskItems (props) {
         </div>
         <ul>
           {
-            tasks.map(task =>
+            tasks.map((task, index) =>
               <li key={task._id}>
                 <div>
                   <input
                     type='checkbox'
                     defaultChecked={task.completed}
-                    onClick={e => completeTask(task._id, e.target.checked)}
+                    onClick={() => completeTask(task)}
                   />
-                  <span className='task'>{task.name} </span>
+                  <span
+                    className='task'
+                    onClick={() => setEditTask({ status: true, index: index })}
+                  >{task.name} 
+                  </span>
                   <input
                     placeholder='Update The List Item'
                   />
@@ -241,6 +267,16 @@ function TodoAppTaskItems (props) {
           </button>
         </Link>
       </div>
+
+      {editTask.status ? (
+        <TodoAppTaskItemPriority
+          task={tasks[editTask.index]}
+          close={() => setEditTask({ status: false, index: null })}
+          update={task => updateTask(task)}
+        />
+      ) : (
+        ''
+      )}
     </div>
   )
 }
