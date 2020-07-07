@@ -78,12 +78,13 @@ function TodoAppTaskItems (props) {
   const { listId } = useParams()
   const [tasks, setTasks] = useState([])
   const [input, setInput] = useState('')
+  const [list, setList] = useState({})
+  const [eListName, setEListName] = useState(false)
 
   useEffect(() => {
     fetch(API_URL + `/${listId}/tasks`)
       .then(response => response.json())
       .then(res => {
-        console.log(res)
         setTasks(res)
       })
   }, [])
@@ -128,13 +129,50 @@ function TodoAppTaskItems (props) {
       })
   }
 
+  const updateListName = event => {
+    const listName = event.target.value
+    if (event.keyCode === 13 && listName.length) {
+      fetch(API_URL + `/${listId}`, {
+        method: 'PUT',
+        body: JSON.stringify({ newList: listName }),
+        headers: {
+          'content-type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then(() => {
+          setList({ ...list, name: listName })
+          setEListName(false)
+        }
+        )
+    }
+    if (event.keyCode === 27 && !listName.length) return setEListName(false)
+  }
+
+
+
   return (
     <div className='todo-lists'>
       <div className='hide'>
         <div className='todo-header'>
-          <h2>
-                    selectedList.list
-          </h2>
+          <div id='tasks-ctnr-header'>
+            {eListName ? (
+              <input
+                type='text'
+                placeholder='Enter a list name'
+                defaultValue={list.name}
+                onKeyDown={e => updateListName(e)}
+              />
+            ) : (
+              <h3>{list.name}</h3>
+            )}
+            <button
+              className='btn-edit'
+              onClick={() => setEListName(true)}
+            >
+              Edit
+            </button>
+          </div>
         </div>
 
         <div>
@@ -156,6 +194,8 @@ function TodoAppTaskItems (props) {
                 <div>
                   <input
                     type='checkbox'
+                    defaultChecked={task.completed}
+                    onClick={e => completeTask(task._id, e.target.checked)}
                   />
                   <span className='task'>{task.name} </span>
                   <input
@@ -193,11 +233,13 @@ function TodoAppTaskItems (props) {
         >
                     Clear Completed Item
         </button>
-        <button
-          className='btn'
-        >
-                    Back
-        </button>
+        <Link to='/'>
+          <button
+            className='btn'
+          >
+          Back
+          </button>
+        </Link>
       </div>
     </div>
   )
