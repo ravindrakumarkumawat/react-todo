@@ -117,6 +117,16 @@ function TodoAppTaskItems (props) {
     }
   }
 
+  const deleteTask = (tid) => {
+    fetch(API_URL + `/${listId}/tasks/${tid}`, {
+      method: 'DELETE'
+    })
+      .then(response => response.json())
+      .then(() => {
+        setTasks(tasks.filter(task => task._id !== tid)
+        )
+      })
+  }
 
   return (
     <div className='todo-lists'>
@@ -153,8 +163,9 @@ function TodoAppTaskItems (props) {
                   />
                   <button
                     className='btn-delete'
+                    onClick={() => deleteTask(task._id)}
                   >
-                                Delete
+                  Delete
                   </button>
                   <button
                     className='btn-edit'
