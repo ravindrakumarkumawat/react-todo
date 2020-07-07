@@ -76,7 +76,7 @@ const API_URL = 'http://localhost:5000/lists'
 // }
 
 function TodoAppTaskItems (props) {
-  const { listId } = useParams()
+  const { id } = useParams()
   const [tasks, setTasks] = useState([])
   const [input, setInput] = useState('')
   const [list, setList] = useState({})
@@ -84,7 +84,7 @@ function TodoAppTaskItems (props) {
   const [editTask, setEditTask] = useState({ status: false, index: null })
 
   useEffect(() => {
-    fetch(API_URL + `/${listId}/tasks`)
+    fetch(API_URL + `/${id}/tasks`)
       .then(response => response.json())
       .then(res => {
         setTasks(res)
@@ -104,7 +104,7 @@ function TodoAppTaskItems (props) {
   const handleSubmit = () => {
     const value = input
     if (value) {
-      fetch(API_URL + `/${listId}/tasks`, {
+      fetch(API_URL + `/${id}/tasks`, {
         method: 'POST',
         body: JSON.stringify({ newItem: value }),
         headers: {
@@ -121,7 +121,7 @@ function TodoAppTaskItems (props) {
   }
 
   const deleteTask = (tid) => {
-    fetch(API_URL + `/${listId}/tasks/${tid}`, {
+    fetch(API_URL + `/${id}/tasks/${tid}`, {
       method: 'DELETE'
     })
       .then(response => response.json())
@@ -134,7 +134,7 @@ function TodoAppTaskItems (props) {
   const updateListName = event => {
     const listName = event.target.value
     if (event.keyCode === 13 && listName.length) {
-      fetch(API_URL + `/${listId}`, {
+      fetch(API_URL + `/${id}`, {
         method: 'PUT',
         body: JSON.stringify({ newList: listName }),
         headers: {
@@ -152,7 +152,7 @@ function TodoAppTaskItems (props) {
   }
 
   const updateTask = (task) => {
-    fetch(API_URL + `/${listId}/tasks/${task._id}`, {
+    fetch(API_URL + `/${id}/tasks/${task._id}`, {
       method: 'PUT',
       body: JSON.stringify({ newItem: task.name, note: task.note, date: task.date, priority: task.priority, completed: !task.completed }),
       headers: {
@@ -163,7 +163,7 @@ function TodoAppTaskItems (props) {
   }
 
   const completeTask = (task) => {
-    fetch(API_URL + `/${listId}/tasks/${task._id}`, {
+    fetch(API_URL + `/${id}/tasks/${task._id}`, {
       method: 'PUT',
       body: JSON.stringify({ newItem: task.name, note: task.note, date: task.date, priority: task.priority, completed: !task.completed }),
       headers: {

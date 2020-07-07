@@ -15,7 +15,7 @@ class TodoApp extends Component {
             <Route path='/lists' exact>
               <TodoAppTasks />
             </Route>
-            <Route path='/list/:listId/tasks' exact>
+            <Route path='/list/:id/tasks' exact>
               <TodoAppTaskItems />
             </Route>
             <Route path='*'>
