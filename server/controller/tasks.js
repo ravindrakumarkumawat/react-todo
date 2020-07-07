@@ -32,8 +32,9 @@ exports.add_task = async (req, res) => {
       createdAt: Date.now()
     }
     list.tasks.push(item)
+    const last = list.tasks[list.tasks.length - 1]
     await list.save()
-    res.status(200).send(item)
+    res.status(200).send(last)
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
