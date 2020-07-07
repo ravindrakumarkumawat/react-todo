@@ -205,7 +205,7 @@ function TodoAppTasks (props) {
         {
           lists.map(list =>
             <li key={list._id}>
-              <span className='list'><Link to={`tasks/${list._id}`}>{list.name}</Link> </span>
+              <span className='list'><Link to={`list/${list._id}/tasks`}>{list.name}</Link> </span>
               <button
                 className='btn-delete'
                 onClick={() => deleteList(list._id)}

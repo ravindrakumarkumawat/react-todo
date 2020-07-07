@@ -12,10 +12,10 @@ class TodoApp extends Component {
         </div>
         <Router>
           <Switch>
-            <Route path='/' exact>
+            <Route path='/lists' exact>
               <TodoAppTasks />
             </Route>
-            <Route path='/tasks/:listId' exact>
+            <Route path='/list/:listId/tasks' exact>
               <TodoAppTaskItems />
             </Route>
             <Route path='*'>
