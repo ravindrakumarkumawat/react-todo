@@ -157,3 +157,8 @@ li:hover {
       min-width: 100%;
       cursor: pointer; 
   }
+  .list a {
+    text-decoration: none;
+    color: #273849;
+    font-size: 1em;
+  }
