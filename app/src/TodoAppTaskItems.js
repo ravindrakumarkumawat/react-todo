@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import TodoAppTaskItemPriority from './TodoAppTaskItemPriority'
+// import TodoAppTaskItemPriority from './TodoAppTaskItemPriority'
 
 const API_URL = 'http://localhost:5000/lists'
 
@@ -10,7 +10,7 @@ function TodoAppTaskItems (props) {
   const [input, setInput] = useState('')
   const [list, setList] = useState('')
   const [editList, setEditList] = useState(false)
-  const [editTask, setEditTask] = useState({ status: false, index: null })
+  // const [editTask, setEditTask] = useState({ status: false, index: null })
 
   useEffect(() => {
     fetch(API_URL + `/${id}/tasks`)
@@ -169,8 +169,7 @@ function TodoAppTaskItems (props) {
                   />
                   <span
                     className='task'
-                    onClick={() => setEditTask({ status: true, index: index })}
-                  >{task.name}
+                  ><Link to={`task/${task._id}`}>{task.name}</Link>
                   </span>
                   <button
                     className='btn-delete'
@@ -195,16 +194,6 @@ function TodoAppTaskItems (props) {
           </button>
         </Link>
       </div>
-
-      {editTask.status ? (
-        <TodoAppTaskItemPriority
-          task={tasks[editTask.index]}
-          close={() => setEditTask({ status: false, index: null })}
-          update={task => updateTask(task)}
-        />
-      ) : (
-        ''
-      )}
     </div>
   )
 }
