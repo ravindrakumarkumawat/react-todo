@@ -172,9 +172,6 @@ function TodoAppTaskItems (props) {
                     onClick={() => setEditTask({ status: true, index: index })}
                   >{task.name}
                   </span>
-                  <input
-                    placeholder='Update The List Item'
-                  />
                   <button
                     className='btn-delete'
                     onClick={() => deleteTask(task._id)}
@@ -192,11 +189,6 @@ function TodoAppTaskItems (props) {
         >
                     Ohh No, List has no item. Add some item
         </p>
-        <button
-          className='btn'
-        >
-                    Clear Completed Item
-        </button>
         <Link to='/'>
           <button
             className='btn'
