@@ -129,21 +129,16 @@ function TodoAppTaskItems (props) {
       <div className='hide'>
         <div className='todo-header'>
           {!editList
-            ? <h2
-                className='list-title'
-                id='listTitleElement'
-              >
-              {list}
-            </h2>
+            ? <h2 className='list-title' id='listTitleElement'>{list}</h2>
             : <h2>
-                <input
-                  type='text'
-                  placeholder='Please enter a task name'
-                  value={list}
-                  onChange={(event) => handleChangeList(event)}
-                  onKeyPress={(event) => handleKeyPressedList(event)}
-                />
-              </h2>
+              <input
+                type='text'
+                placeholder='Please enter a task name'
+                value={list}
+                onChange={(event) => handleChangeList(event)}
+                onKeyPress={(event) => handleKeyPressedList(event)}
+              />
+            </h2>
           }
           {!editList
             ? <button className='btn' onClick={() => setEditList(true)}>Edit</button>
