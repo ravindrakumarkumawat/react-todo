@@ -4,83 +4,12 @@ import TodoAppTaskItemPriority from './TodoAppTaskItemPriority'
 
 const API_URL = 'http://localhost:5000/lists'
 
-// class TodoAppTaskItems extends Component {
-//   render () {
-//     return (
-//       <div className='todo-lists'>
-//         <div className='hide'>
-//           <div className='todo-header'>
-//             <h2>
-//                 selectedList.list
-//             </h2>
-//           </div>
-
-//           <div className='add-list-form'>
-//             <input placeholder='Search | Add List Item' />
-
-//             <button
-//               className='btn create'
-//             >+
-//             </button>
-//           </div>
-//           <ul>
-//             <li>
-//               <div>
-//                 <input
-//                   type='checkbox'
-//                 />
-//                 <span>
-//                          item.item
-//                 </span>
-//                 <input
-//                   placeholder='Update The List Item'
-//                 />
-//                 <button
-//                   className='btn-delete'
-//                 >
-//                             Delete
-//                 </button>
-//                 <button
-//                   className='btn-edit'
-//                 >
-//                             Edit
-//                 </button>
-//                 <button
-//                   className='btn-edit'
-//                 >
-//                             Save
-//                 </button>
-//               </div>
-//             </li>
-//           </ul>
-
-//           <p
-//             className='empty-list'
-//           >
-//                 Ohh No, List has no item. Add some item
-//           </p>
-//           <button
-//             className='btn'
-//           >
-//                 Clear Completed Item
-//           </button>
-//           <button
-//             className='btn'
-//           >
-//                 Back
-//           </button>
-//         </div>
-//       </div>
-//     )
-//   }
-// }
-
 function TodoAppTaskItems (props) {
   const { id } = useParams()
   const [tasks, setTasks] = useState([])
   const [input, setInput] = useState('')
-  const [list, setList] = useState({})
-  const [eListName, setEListName] = useState(false)
+  const [list, setList] = useState('')
+  const [editList, setEditList] = useState(false)
   const [editTask, setEditTask] = useState({ status: false, index: null })
 
   useEffect(() => {
@@ -89,7 +18,21 @@ function TodoAppTaskItems (props) {
       .then(res => {
         setTasks(res)
       })
+    listName()
   }, [])
+
+  const listName = () => {
+    fetch(API_URL)
+      .then(response => response.json())
+      .then(res => {
+        const lists = res
+        lists.map((list) => {
+          if (list._id === id) {
+            setList(list.name)
+          }
+        })
+      })
+  }
 
   const handleChange = (event) => {
     setInput(event.target.value)
@@ -131,26 +74,6 @@ function TodoAppTaskItems (props) {
       })
   }
 
-  const updateListName = event => {
-    const listName = event.target.value
-    if (event.keyCode === 13 && listName.length) {
-      fetch(API_URL + `/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify({ newList: listName }),
-        headers: {
-          'content-type': 'application/json'
-        }
-      })
-        .then(response => response.json())
-        .then(() => {
-          setList({ ...list, name: listName })
-          setEListName(false)
-        }
-        )
-    }
-    if (event.keyCode === 27 && !listName.length) return setEListName(false)
-  }
-
   const updateTask = (task) => {
     fetch(API_URL + `/${id}/tasks/${task._id}`, {
       method: 'PUT',
@@ -173,28 +96,58 @@ function TodoAppTaskItems (props) {
       .then(response => response.json())
   }
 
+  const handleChangeList = (event) => {
+    setList(event.target.value)
+  }
+
+  const handleKeyPressedList = (event) => {
+    if (event.key === 'Enter') {
+      handleSubmitList()
+    }
+  }
+
+  const handleSubmitList = () => {
+    const value = list
+    if (value) {
+      fetch(API_URL + `/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ newList: value }),
+        headers: {
+          'content-type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then(() =>
+          setList(list)
+        )
+      setEditList(false)
+    }
+  }
+
   return (
     <div className='todo-lists'>
       <div className='hide'>
         <div className='todo-header'>
-          <div id='tasks-ctnr-header'>
-            {eListName ? (
-              <input
-                type='text'
-                placeholder='Enter a list name'
-                defaultValue={list.name}
-                onKeyDown={e => updateListName(e)}
-              />
-            ) : (
-              <h3>{list.name}</h3>
-            )}
-            <button
-              className='btn-edit'
-              onClick={() => setEListName(true)}
-            >
-              Edit
-            </button>
-          </div>
+          {!editList
+            ? <h2
+                className='list-title'
+                id='listTitleElement'
+              >
+              {list}
+            </h2>
+            : <h2>
+                <input
+                  type='text'
+                  placeholder='Please enter a task name'
+                  value={list}
+                  onChange={(event) => handleChangeList(event)}
+                  onKeyPress={(event) => handleKeyPressedList(event)}
+                />
+              </h2>
+          }
+          {!editList
+            ? <button className='btn' onClick={() => setEditList(true)}>Edit</button>
+            : <button className='btn' onClick={() => handleSubmitList()}>Save</button>}
         </div>
 
         <div>
@@ -222,7 +175,7 @@ function TodoAppTaskItems (props) {
                   <span
                     className='task'
                     onClick={() => setEditTask({ status: true, index: index })}
-                  >{task.name} 
+                  >{task.name}
                   </span>
                   <input
                     placeholder='Update The List Item'
@@ -232,16 +185,6 @@ function TodoAppTaskItems (props) {
                     onClick={() => deleteTask(task._id)}
                   >
                   Delete
-                  </button>
-                  <button
-                    className='btn-edit'
-                  >
-                                Edit
-                  </button>
-                  <button
-                    className='btn-edit'
-                  >
-                                Save
                   </button>
                 </div>
               </li>
