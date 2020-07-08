@@ -184,11 +184,9 @@ function TodoAppTaskItems (props) {
           }
         </ul>
 
-        <p
-          className='empty-list'
-        >
-                    Ohh No, List has no item. Add some item
-        </p>
+        { tasks.length === 0 
+          ? <p className='empty-list'>Ohh No, List has no item. Add some item</p>
+          : ''}
         <Link to='/'>
           <button
             className='btn'

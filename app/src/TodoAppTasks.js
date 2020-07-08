@@ -85,9 +85,10 @@ function TodoAppTasks (props) {
           )
         }
       </ul>
-      <p className='empty-list'>
-          Pheww, List is Empty. Lets Chill & Netflix
-      </p>
+
+      {lists.length === 0
+        ? <p className='empty-list'>Pheww, List is Empty. Lets Chill & Netflix</p>
+        : ''}
     </div>
   )
 }
