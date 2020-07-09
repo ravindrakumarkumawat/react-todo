@@ -47,7 +47,7 @@ function TodoAppTaskItemPriority (props) {
   }
 
   const handleKeyDownNote = (event) => {
-    if (event.keyCode === 13 && event.shiftKey) { 
+    if (event.keyCode === 13 && event.shiftKey) {
       updateData({ type: 'note', value: note })
     }
   }
@@ -69,7 +69,7 @@ function TodoAppTaskItemPriority (props) {
     setEdit(false)
   }
 
-  const updateData = (obj) => {    
+  const updateData = (obj) => {
     if (obj.type === 'priority') {
       task.priority = obj.value
       setTask(task)
@@ -97,35 +97,35 @@ function TodoAppTaskItemPriority (props) {
   return (
     <div className='todo-lists'>
       <div className='todo-header'>
-      {!edit
-        ? <h2 className='task-list-title'>
-          {task.name}
-        </h2>
-        : <h2>
-          <input
-            type='text'
-            placeholder='Please enter a task name'
-            value={name}
-            onChange={(event) => handleChangeName(event)}
-            onKeyPress={(event) => handleKeyPressedName(event)}
-          />
-        </h2>}
-      {edit
-        ? <button
-          className='btn'
-          onClick={() => handleSubmitName()}
+        {!edit
+          ? <h2 className='task-list-title'>
+            {task.name}
+          </h2>
+          : <h2>
+            <input
+              type='text'
+              placeholder='Please enter a task name'
+              value={name}
+              onChange={(event) => handleChangeName(event)}
+              onKeyPress={(event) => handleKeyPressedName(event)}
+            />
+          </h2>}
+        {edit
+          ? <button
+            className='btn'
+            onClick={() => handleSubmitName()}
           >
         save
-        </button>
-        : <button
-          className='btn'
-          onClick={() => setEdit(true)}
+          </button>
+          : <button
+            className='btn'
+            onClick={() => setEdit(true)}
           >
         edit
-        </button>}
-        </div>
+          </button>}
+      </div>
 
-        <div className='tasks form'>
+      <div className='tasks form'>
 
         Note: <br />
         <textarea
