@@ -85,6 +85,17 @@ function TodoAppTaskItems (props) {
       .then(response => response.json())
   }
 
+  const updateTask = (task) => {
+    fetch(API_URL + `/${id}/tasks/${task._id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ newItem: task.name, note: task.note, date: task.date, priority: task.priority, completed: task.completed }),
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+  }
+
   const handleChangeList = (event) => {
     setList(event.target.value)
   }
@@ -193,6 +204,7 @@ function TodoAppTaskItems (props) {
           id={id}
           task={editTask.selectedTask}
           close={() => setEditTask({ status: false, selectedTask: {} })}
+          update={(task) => updateTask(task)}
         />
       ) : ('')}
     </div>

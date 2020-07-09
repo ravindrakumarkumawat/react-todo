@@ -1,22 +1,8 @@
 import React, { useState } from 'react'
 
-const API_URL = 'http://localhost:5000/lists'
-
 function TodoAppTaskItemPriority (props) {
-  const { task, id } = props
+  const { task } = props
   const [edit, setEdit] = useState(false)
-
-  const update = () => {
-    fetch(API_URL + `/${id}/tasks/${task._id}`, {
-      method: 'PUT',
-      body: JSON.stringify({ newItem: task.name, note: task.note, date: task.date, priority: task.priority, completed: task.completed }),
-      headers: {
-        'content-type': 'application/json'
-      }
-    })
-      .then(response => response.json())
-    setEdit(false)
-  }
 
   const updateData = (obj) => {
     if (obj.type === 'priority') {
@@ -31,7 +17,8 @@ function TodoAppTaskItemPriority (props) {
     if (obj.type === 'name') {
       task.name = obj.value
     }
-    update()
+    props.update(task)  
+    setEdit(false)
   }
 
   const handleChange = (event) => {
