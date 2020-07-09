@@ -150,8 +150,8 @@ function TodoAppTaskItems (props) {
               />
             </h2>}
           {!editList
-            ? <button className='btn' onClick={() => setEditList(true)}>Edit</button>
-            : <button className='btn' onClick={() => handleSubmitList()}>Save</button>}
+            ? <button className='btn common' onClick={() => setEditList(true)}>Edit</button>
+            : <button className='btn common' onClick={() => handleSubmitList()}>Save</button>}
         </div>
 
         <div>
@@ -169,7 +169,10 @@ function TodoAppTaskItems (props) {
         <ul>
           {
             searchedTasks.slice(0).reverse().map((task) =>
-              <li key={task._id}>
+              <li
+                key={task._id}
+                className={task.completed ? 'strikeout' : ''}
+              >
                 <div>
                   <input
                     type='checkbox'
@@ -177,7 +180,12 @@ function TodoAppTaskItems (props) {
                     onClick={() => completeTask(task)}
                   />
                   <span
-                    className='task'
+                    className={
+                      task.priority === 'High' ? 'red'
+                        : task.priority === 'Medium' ? 'yellow'
+                          : task.priority === 'Low' ? 'green'
+                            : ''
+                    }
                     onClick={() => {
                       if (editTask.status) {
                         setEditTask({ status: false, selectedTask: {} })
