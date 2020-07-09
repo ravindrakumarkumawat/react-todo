@@ -7,6 +7,7 @@ const API_URL = 'http://localhost:5000/lists'
 function TodoAppTaskItems (props) {
   const { id } = useParams()
   const [tasks, setTasks] = useState([])
+  const [searchedTasks, setSearchedTasks] = useState([])
   const [input, setInput] = useState('')
   const [list, setList] = useState('')
   const [editList, setEditList] = useState(false)
@@ -17,6 +18,7 @@ function TodoAppTaskItems (props) {
       .then(response => response.json())
       .then(res => {
         setTasks(res)
+        setSearchedTasks(res)
       })
     listName()
   }, [])
@@ -36,6 +38,13 @@ function TodoAppTaskItems (props) {
 
   const handleChange = (event) => {
     setInput(event.target.value)
+    const newTask = event.target.value
+    if (newTask.length > 0) {
+      return setSearchedTasks(
+        tasks.filter((task) => task.name.match(newTask))
+      )
+    }
+    setSearchedTasks(tasks)
   }
 
   const handleKeyPressed = (event) => {
@@ -58,6 +67,7 @@ function TodoAppTaskItems (props) {
         .then((res) => {
           const newTasks = [...tasks, res]
           setTasks(newTasks)
+          setSearchedTasks(newTasks)
           setInput('')
         })
     }
@@ -69,8 +79,8 @@ function TodoAppTaskItems (props) {
     })
       .then(response => response.json())
       .then(() => {
-        setTasks(tasks.filter(task => task._id !== tid)
-        )
+        setTasks(tasks.filter(task => task._id !== tid))
+        setSearchedTasks(tasks.filter(task => task._id !== tid))
       })
   }
 
@@ -158,7 +168,7 @@ function TodoAppTaskItems (props) {
         </div>
         <ul>
           {
-            tasks.map((task) =>
+            searchedTasks.slice(0).reverse().map((task) =>
               <li key={task._id}>
                 <div>
                   <input
