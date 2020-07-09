@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-// import TodoAppTaskItemPriority from './TodoAppTaskItemPriority'
+import TodoAppTaskItemPriority from './TodoAppTaskItemPriority'
 
 const API_URL = 'http://localhost:5000/lists'
 
@@ -10,7 +10,7 @@ function TodoAppTaskItems (props) {
   const [input, setInput] = useState('')
   const [list, setList] = useState('')
   const [editList, setEditList] = useState(false)
-  // const [editTask, setEditTask] = useState({ status: false, index: null })
+  const [editTask, setEditTask] = useState({ status: false, index: null })
 
   useEffect(() => {
     fetch(API_URL + `/${id}/tasks`)
@@ -74,17 +74,6 @@ function TodoAppTaskItems (props) {
       })
   }
 
-  // const updateTask = (task) => {
-  //   fetch(API_URL + `/${id}/tasks/${task._id}`, {
-  //     method: 'PUT',
-  //     body: JSON.stringify({ newItem: task.name, note: task.note, date: task.date, priority: task.priority, completed: !task.completed }),
-  //     headers: {
-  //       'content-type': 'application/json'
-  //     }
-  //   })
-  //     .then(response => response.json())
-  // }
-
   const completeTask = (task) => {
     fetch(API_URL + `/${id}/tasks/${task._id}`, {
       method: 'PUT',
@@ -138,8 +127,7 @@ function TodoAppTaskItems (props) {
                 onChange={(event) => handleChangeList(event)}
                 onKeyPress={(event) => handleKeyPressedList(event)}
               />
-            </h2>
-          }
+            </h2>}
           {!editList
             ? <button className='btn' onClick={() => setEditList(true)}>Edit</button>
             : <button className='btn' onClick={() => handleSubmitList()}>Save</button>}
@@ -169,7 +157,8 @@ function TodoAppTaskItems (props) {
                   />
                   <span
                     className='task'
-                  ><Link to={`task/${task._id}`}>{task.name}</Link>
+                    onClick={() => setEditTask({ status: true, index: index })}
+                  >{task.name}
                   </span>
                   <button
                     className='btn-delete'
@@ -183,7 +172,7 @@ function TodoAppTaskItems (props) {
           }
         </ul>
 
-        { tasks.length === 0 
+        {tasks.length === 0
           ? <p className='empty-list'>Ohh No, List has no item. Add some item</p>
           : ''}
         <Link to='/'>
@@ -194,6 +183,13 @@ function TodoAppTaskItems (props) {
           </button>
         </Link>
       </div>
+      {editTask.status ? (
+        <TodoAppTaskItemPriority
+          id={id}
+          task={tasks[editTask.index]}
+          close={() => setEditTask({ status: false, index: null })}
+        />
+      ) : ('')}
     </div>
   )
 }
