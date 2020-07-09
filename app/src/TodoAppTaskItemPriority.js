@@ -7,11 +7,10 @@ function TodoAppTaskItemPriority (props) {
   const { id, tid } = useParams()
   const [tasks, setTasks] = useState([])
   const [task, setTask] = useState({})
-  // const [name, setName] = useState('')
-  // const [date, setDate] = useState('')
-  // const [priority, setPriority] = useState('')
-  // const [note, setNote] = useState('')
-  // const [completed, setCompleted] = useState(false)
+  const [edit, setEdit] = useState(false)
+  const [name, setName] = useState('')
+  const [note, setNote] = useState('')
+  const [date, setDate] = useState('')
 
   useEffect(() => {
     fetch(API_URL + `/${id}/tasks`)
@@ -19,10 +18,44 @@ function TodoAppTaskItemPriority (props) {
       .then(res => {
         setTasks(res)
         for (const t of res) {
-          if (t._id === tid) setTask(t)
+          if (t._id === tid) {
+            setTask(t)
+            setName(t.name)
+            setNote(t.note)
+            setDate(t.date)
+          }
         }
-      })   
+      })
   }, [])
+
+  const handleChangeName = (event) => {
+    setName(event.target.value)
+  }
+
+  const handleKeyPressedName = (event) => {
+    if (event.key === 'Enter') {
+      handleSubmitName()
+    }
+  }
+
+  const handleSubmitName = () => {
+    updateData({ type: 'name', value: name })
+  }
+
+  const handleChangeNote = (event) => {
+    setNote(event.target.value)
+  }
+
+  const handleKeyDownNote = (event) => {
+    if (event.keyCode === 13 && event.shiftKey) { 
+      updateData({ type: 'note', value: note })
+    }
+  }
+
+  const handleChangeDate = (event) => {
+    setDate(event.target.value)
+    updateData({ type: 'date', value: date })
+  }
 
   const update = () => {
     fetch(API_URL + `/${id}/tasks/${tid}`, {
@@ -33,19 +66,20 @@ function TodoAppTaskItemPriority (props) {
       }
     })
       .then(response => response.json())
+    setEdit(false)
   }
 
-  const updateData = (obj) => {
+  const updateData = (obj) => {    
+    if (obj.type === 'priority') {
+      task.priority = obj.value
+      setTask(task)
+    }
     if (obj.type === 'note') {
       task.note = obj.value
       setTask(task)
     }
     if (obj.type === 'date') {
       task.date = obj.value
-      setTask(task)
-    }
-    if (obj.type === 'priority') {
-      task.priority = obj.value
       setTask(task)
     }
     if (obj.type === 'name') {
@@ -55,67 +89,63 @@ function TodoAppTaskItemPriority (props) {
     update()
   }
 
-  const updateName = event => {
-    const taskName = event.target.value
-    if (event.keyCode === 13) return updateData({ type: 'name', value: taskName })
-  }
+  // const updateName = event => {
+  //   const taskName = event.target.value
+  //   if (event.keyCode === 13) return updateData({ type: 'name', value: taskName })
+  // }
 
   return (
     <div className='todo-lists'>
-      <div className='todo-header' />
-      <button
-        className='btn'
-        onClick={() => updateName()}
-      >
-    edit
-      </button>
-      <h2 className='task-list-title'>
-        {task.name}
-        <input
-          type='text'
-          placeholder='Please enter a task name'
-          defaultValue={task.name}
-          onKeyDown={e => updateName(e)}
-        />
-      </h2>
+      <div className='todo-header'>
+      {!edit
+        ? <h2 className='task-list-title'>
+          {task.name}
+        </h2>
+        : <h2>
+          <input
+            type='text'
+            placeholder='Please enter a task name'
+            value={name}
+            onChange={(event) => handleChangeName(event)}
+            onKeyPress={(event) => handleKeyPressedName(event)}
+          />
+        </h2>}
+      {edit
+        ? <button
+          className='btn'
+          onClick={() => handleSubmitName()}
+          >
+        save
+        </button>
+        : <button
+          className='btn'
+          onClick={() => setEdit(true)}
+          >
+        edit
+        </button>}
+        </div>
 
-      <div className='tasks form'>
+        <div className='tasks form'>
 
         Note: <br />
         <textarea
           cols='62'
           rows='10'
           placeholder=''
-          defaultValue={task.note}
-          onKeyDown={e => {
-            if (e.keyCode === 13 && e.shiftKey) updateData({ type: 'note', value: e.target.value })
-          }}
+          value={note}
+          onChange={(event) => handleChangeNote(event)}
+          onKeyDown={(event) => handleKeyDownNote(event)}
         /><br />
-
         Date: <br />
         <input
-          defaultValue={task.date}
+          value={date}
           type='date'
-          onChange={e => updateData({ type: 'date', value: e.target.value })}
+          onChange={(event) => handleChangeDate(event)}
         /> <br />
-
-        Priority: <br />
-        <select
-          value={task.priority}
-          onChange={e => updateData({ type: 'priority', value: e.target.value })}
-        >
-          <option value='None'>None</option>
-          <option value='Low'>Low</option>
-          <option value='Medium'>Medium</option>
-          <option value='High'>High</option>
-        </select>
       </div>
+
       <Link to='/'>
-        <button
-          className='btn'
-        >
-          Back
-        </button>
+        <button className='btn'>Back</button>
       </Link>
     </div>
   )
