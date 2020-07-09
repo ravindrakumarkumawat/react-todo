@@ -6,17 +6,26 @@ const API_URL = 'http://localhost:5000/lists'
 function TodoAppTasks (props) {
   const [lists, setLists] = useState([])
   const [input, setInput] = useState('')
+  const [searchList, setSearchList] = useState([])
 
   useEffect(() => {
     fetch(API_URL)
       .then(response => response.json())
       .then(res => {
         setLists(res)
+        setSearchList(res)
       })
   }, [])
 
   const handleChange = (event) => {
     setInput(event.target.value)
+    const newList = event.target.value
+    if (newList.length > 0) {
+      return setSearchList(
+        lists.filter((list) => list.name.match(newList))
+      )
+    }
+    setSearchList(lists)
   }
 
   const handleKeyPressed = (event) => {
@@ -39,6 +48,7 @@ function TodoAppTasks (props) {
         .then((res) => {
           const newlists = [...lists, res]
           setLists(newlists)
+          setSearchList(newlists)
           setInput('')
         })
     }
@@ -50,8 +60,8 @@ function TodoAppTasks (props) {
     })
       .then(response => response.json())
       .then(() => {
-        setLists(lists.filter(list => list._id !== id)
-        )
+        setLists(lists.filter(list => list._id !== id))
+        setSearchList(lists.filter(list => list._id !== id))
       })
   }
 
@@ -72,7 +82,7 @@ function TodoAppTasks (props) {
       </div>
       <ul>
         {
-          lists.map(list =>
+          searchList.map(list =>
             <li key={list._id}>
               <span className='list'><Link to={`list/${list._id}/tasks`}>{list.name}</Link> </span>
               <button
