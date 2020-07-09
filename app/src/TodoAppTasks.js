@@ -82,7 +82,7 @@ function TodoAppTasks (props) {
       </div>
       <ul>
         {
-          searchList.map(list =>
+          searchList.slice(0).reverse().map(list =>
             <li key={list._id}>
               <span className='list'><Link to={`list/${list._id}/tasks`}>{list.name}</Link> </span>
               <button
