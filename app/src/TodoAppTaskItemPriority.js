@@ -17,7 +17,7 @@ function TodoAppTaskItemPriority (props) {
     if (obj.type === 'name') {
       task.name = obj.value
     }
-    props.update(task)  
+    props.update(task)
     setEdit(false)
   }
 
@@ -33,22 +33,20 @@ function TodoAppTaskItemPriority (props) {
     <div className='todo-lists'>
       <div className='todo-header'>
         {!edit ? (
-          <span>
-            <h2>{task.name}</h2>
-            <button className='btn' onClick={() => setEdit(true)}>Edit</button>
-          </span>
+          <h2>{task.name}</h2>
         ) : (
-          <div>
-            <input
-              type='text'
-              placeholder='Please enter a task name'
-              defaultValue={task.name}
-              onKeyDown={(event) => handleChange(event)}
-            />
-          </div>
+          <input
+            type='text'
+            placeholder='Please enter a task name'
+            defaultValue={task.name}
+            onKeyDown={(event) => handleChange(event)}
+          />
         )}
+        {!edit ? (
+          <button className='btn' onClick={() => setEdit(true)}>Edit</button>
+        ) : ('')}
       </div>
-      <div className='tasks form'>
+      <div className='tasks form'><br />
       Note: <br />
         <textarea
           cols='62'
