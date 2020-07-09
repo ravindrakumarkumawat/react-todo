@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 const API_URL = 'http://localhost:5000/lists'
 
 function TodoAppTaskItemPriority (props) {
   const { task, id } = props
   const [edit, setEdit] = useState(false)
-
-  useEffect(() => update())
 
   const update = () => {
     fetch(API_URL + `/${id}/tasks/${task._id}`, {

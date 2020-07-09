@@ -157,7 +157,12 @@ function TodoAppTaskItems (props) {
                   />
                   <span
                     className='task'
-                    onClick={() => setEditTask({ status: true, selectedTask: task })}
+                    onClick={() => {
+                      if (editTask.status) {
+                        setEditTask({ status: false, selectedTask: {} })
+                      }
+                      setEditTask({ status: true, selectedTask: task })
+                    }}
                   >{task.name}
                   </span>
                   <button
