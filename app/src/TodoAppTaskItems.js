@@ -10,7 +10,7 @@ function TodoAppTaskItems (props) {
   const [input, setInput] = useState('')
   const [list, setList] = useState('')
   const [editList, setEditList] = useState(false)
-  const [editTask, setEditTask] = useState({ status: false, index: null })
+  const [editTask, setEditTask] = useState({ status: false, selectedTask: {} })
 
   useEffect(() => {
     fetch(API_URL + `/${id}/tasks`)
@@ -147,7 +147,7 @@ function TodoAppTaskItems (props) {
         </div>
         <ul>
           {
-            tasks.map((task, index) =>
+            tasks.map((task) =>
               <li key={task._id}>
                 <div>
                   <input
@@ -157,7 +157,7 @@ function TodoAppTaskItems (props) {
                   />
                   <span
                     className='task'
-                    onClick={() => setEditTask({ status: true, index: index })}
+                    onClick={() => setEditTask({ status: true, selectedTask: task })}
                   >{task.name}
                   </span>
                   <button
@@ -186,8 +186,8 @@ function TodoAppTaskItems (props) {
       {editTask.status ? (
         <TodoAppTaskItemPriority
           id={id}
-          task={tasks[editTask.index]}
-          close={() => setEditTask({ status: false, index: null })}
+          task={editTask.selectedTask}
+          close={() => setEditTask({ status: false, selectedTask: {} })}
         />
       ) : ('')}
     </div>
