@@ -169,9 +169,9 @@ function TodoAppTaskItemPriority (props) {
   }
 
   const updateData = (obj) => {
-    // if (obj.type === 'priority') {
-    //   task.priority = obj.value
-    // }
+    if (obj.type === 'priority') {
+      task.priority = obj.value
+    }
     if (obj.type === 'note') {
       task.note = obj.value
     }
@@ -228,6 +228,16 @@ function TodoAppTaskItemPriority (props) {
           type='date'
           onChange={e => updateData({ type: 'date', value: e.target.value })}
         /> <br />
+        Priority: <br />
+        <select
+          defaultValue={task.priority}
+          onChange={e => updateData({ type: 'priority', value: e.target.value })}
+        >
+          <option value='None'>None</option>
+          <option value='Low'>Low</option>
+          <option value='Medium'>Medium</option>
+          <option value='High'>High</option>
+        </select>
       </div>
     </div>
   )
