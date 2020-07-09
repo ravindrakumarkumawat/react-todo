@@ -170,9 +170,9 @@ function TodoAppTaskItemPriority (props) {
     // if (obj.type === 'priority') {
     //   task.priority = obj.value
     // }
-    // if (obj.type === 'note') {
-    //   task.note = obj.value
-    // }
+    if (obj.type === 'note') {
+      task.note = obj.value
+    }
     // if (obj.type === 'date') {
     //   task.date = obj.value
     // }
@@ -208,6 +208,18 @@ function TodoAppTaskItemPriority (props) {
             />
           </div>
         )}
+      </div>
+      <div className='tasks form'>
+      Note: <br />
+        <textarea
+          cols='62'
+          rows='10'
+          placeholder=''
+          defaultValue={task.note}
+          onKeyDown={e => {
+            if (e.keyCode === 13 && e.shiftKey) updateData({ type: 'note', value: e.target.value })
+          }}
+        /><br />
       </div>
     </div>
   )
