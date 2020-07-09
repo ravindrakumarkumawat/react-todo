@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 // import { useParams, Link } from 'react-router-dom'
 
 const API_URL = 'http://localhost:5000/lists'
@@ -154,6 +154,8 @@ function TodoAppTaskItemPriority (props) {
   const { task, id } = props
   const [edit, setEdit] = useState(false)
 
+  useEffect(() => update())
+
   const update = () => {
     fetch(API_URL + `/${id}/tasks/${task._id}`, {
       method: 'PUT',
@@ -173,9 +175,9 @@ function TodoAppTaskItemPriority (props) {
     if (obj.type === 'note') {
       task.note = obj.value
     }
-    // if (obj.type === 'date') {
-    //   task.date = obj.value
-    // }
+    if (obj.type === 'date') {
+      task.date = obj.value
+    }
     if (obj.type === 'name') {
       task.name = obj.value
     }
@@ -220,6 +222,12 @@ function TodoAppTaskItemPriority (props) {
             if (e.keyCode === 13 && e.shiftKey) updateData({ type: 'note', value: e.target.value })
           }}
         /><br />
+        Date: <br />
+        <input
+          defaultValue={task.date}
+          type='date'
+          onChange={e => updateData({ type: 'date', value: e.target.value })}
+        /> <br />
       </div>
     </div>
   )
