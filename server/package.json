@@ -5,7 +5,10 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",    
+    "build": "cd .. && cd app && npm run build",
+    "install-app": "cd .. && cd app && npm install",
+    "heroku-postbuild": "npm run install-app && npm run build"
   },
   "author": "Ravindra Kumar Kumawat",
   "license": "ISC",
