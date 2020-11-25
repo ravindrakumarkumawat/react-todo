@@ -23,8 +23,8 @@ app.use('/lists/:id/tasks', taskRouter)
 
 // Production
 if (process.env.NODE_ENV === 'production') {
-  App.use(Express.static(path.join(__dirname, '../app/build')))
-  App.use('*', (req, res) => {
+  app.use(Express.static(path.join(__dirname, '../app/build')))
+  app.use('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../app/build/index.html'))
   })
 }
